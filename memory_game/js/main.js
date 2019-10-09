@@ -31,19 +31,22 @@ const cards = [
 
 var cardsInPlay = [];
 
-function flipCard (cardId) 
+function flipCard () 
 { 
+var clickedCard = this;
+var cardId = clickedCard.getAttribute("data-id");
 
-var cardOne = cards[0];
 
 cardsInPlay.push(cards[cardId].rank);
 
-console.log("User flipped " + cards[cardId].rank);
-console.log("User flipped" + cards[cardId].suit);
-console.log("User flipped" + cards[cardId].cardImage);
+// console.log("User flipped " + cards[cardId].rank);
+// console.log("User flipped" + cards[cardId].suit);
+// console.log("User flipped" + cards[cardId].cardImage);
 
 
 console.log(cardsInPlay);
+
+clickedCard.setAttribute("src", cards[cardId].cardImage);
 
 if (cardsInPlay.length === 2) {
 	if (cardsInPlay[0] === cardsInPlay[1]) {
@@ -56,22 +59,82 @@ if (cardsInPlay.length === 2) {
 }
 }
 
-flipCard (0)
+function createBoard(){
 
-flipCard (2)
+for (var i = 0; i < cards.length; i++) {
+
+	 var cardElement = document.createElement("img");
+		cardElement.setAttribute("src","images/back.png");
+		cardElement.setAttribute("data-id",i);
+		cardElement.addEventListener("click", flipCard);
+		var gameBoard = document.getElementById("game-board");
+		gameBoard.appendChild(cardElement);
+		
+	}
+
+}
+
+createBoard()
+	
+
+
+
 /*
 
-Instructions
-Next update the cards[cardId] portion of cardsInPlay.push(cards[cardId]);. You'll want to push the name of the card ("queen" or "king") to the cardsInPlay array.
-HINT: You'll want to use the rank property like we did in the last step.
+Alright! Finally, when the user clicks a card, we want to display the image for the face of that card in place of the back of the card.
 
-Now let's add a bit of new code so that we can "see" the cards that are flipped in our console. Add two console.log() statements. One should log the cardImage and the other should log the suit for the flipped card.
+Right before the if statement where you are checking to see if two cards have been played, use the setAttribute method to update the src attribute to the image of the card that was just clicked (the image source is in the cardImage property in that card's object in the cards array).
+HINT: How can you access the cardImage property? Take a look at the line where we were logging this property to the console in the last assignment for a hint:
 
-Save your main.js file, open the project in Chrome and open the console. Make sure that the "User flipped queen" and "User flipped king" messages are still displayed. You should now also see the image paths and suits displayed.
+console.log(cards[cardId].cardImage)
+
+HINT: Just as we did in the last step, we can use the this keyword to access the element the user just clicked on. Except now instead of getting an attribute, we want to set the src attribute.
+
+HINT: We'll want to make sure that there are no quotation marks surrounding the new value of the src attribute (cards[cardId].cardImage) when we use the setAttribute() method.
+
+Earlier, we added a click event to each card. Now, when each card is clicked, the flipCard function will run. Before we can test things out, we'll need to make a few edits to our flipCard function.
+
+Remove the cardId parameter from the flip card function. We no longer want to hard-code the index number of the card that should be flipped - it will be part of the cardElement that calls the click event.
+On the first line inside the flipCard function, use the getAttribute method to get the data-id attribute of the card that was just clicked and store it in a variable cardId.
+HINT: We can use the this keyword to access the card that was clicked: this.getAttribute('attribute-we-want-to-get-goes-here');
+
+Instructions - Actually Creating the Board
+Now, you have a function called createBoard which has all the cards in it. Great! What's left?
+
+We have to actually call the createBoard function to create the board!
+
+Delete the two lines of code where you are calling the flipCard function:
+flipCard(0);
+flipCard(2);
+Instead, at the very end of your JavaScript file, invoke the createBoard function.
+Make sure that you do this below where you define the function!
+
+Instructions - Finalizing the Card
+Next, use the addEventListener() method on the cardElement. Add a click event so that when a user clicks on a card, the flipCard function is called.
+Now you have a complete game card, stored in cardElement! Great job.
+
+As the last piece of the for loop, append the cardElement to the game board (which has an id of game-board).
+Hint: use the appendChild() method to do this.
+
+
+Instructions - Adding the Card Image and ID
+Still in the loop, use the setAttribute() method on cardElement. We want to add a src attribute of "images/back.png". Now, the user will see the back of the card.
+HINT: For reference, here's the syntax for setting an attribute:* cardElement.setAttribute('attributeName', 'attributeValue');
+
+Next, use the setAttribute() method on cardElement once again. Set the card's 'data-id' attribute to be the current index of the card array, i (no quotes). Now, we can track which card it is.
+NOTE: data- attributes are meant to store data about an element that is not tied to a style.
 
 
 
 
+Instructions - Adding the Card Image and ID
+Still in the loop, use the setAttribute() method on cardElement. We want to add a src attribute of "images/back.png". Now, the user will see the back of the card.
+HINT: For reference, here's the syntax for setting an attribute:* cardElement.setAttribute('attributeName', 'attributeValue');
+
+Next, use the setAttribute() method on cardElement once again. Set the card's 'data-id' attribute to be the current index of the card array, i (no quotes). Now, we can track which card it is.
+NOTE: data- attributes are meant to store data about an element that is not tied to a style.
+	
+}
 
 
 
